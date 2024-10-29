@@ -43,8 +43,8 @@ db.connect()
 
 
 def read_card(reader: SimpleMFRC522):
-    id = reader.read()
-    return id
+    id, _ = reader.read()
+    return str(id)
 
 
 if __name__ == "__main__":
