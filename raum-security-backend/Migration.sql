@@ -11,6 +11,7 @@ CREATE TABLE alarm_toggle_event (
     id INT AUTO_INCREMENT PRIMARY KEY,
     alarm_id INT NOT NULL,
     timestamp DATETIME NOT NULL,
+    toggled_to BOOLEAN NOT NULL,
     FOREIGN KEY (alarm_id) REFERENCES alarm(id)
 );
 

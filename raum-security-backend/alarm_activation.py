@@ -25,12 +25,14 @@ class Alarm(Model):
 
     class Meta:
         database = db
+        table_name = "alarm"
 
 
 class AlarmToggleEvent(Model):
     id = IntegerField(primary_key=True)
     alarm = ForeignKeyField(Alarm, backref="toggle_events")
     timestamp = DateTimeField()
+    toggled_to = BooleanField()
 
     class Meta:
         database = db
@@ -59,6 +61,10 @@ if __name__ == "__main__":
         print(
             f"Alarm {alarm.name} is now {'active' if alarm.is_active else 'inactive'}"
         )
-        alarm_toggle_event = AlarmToggleEvent(alarm=alarm, timestamp=datetime.now())
+        alarm_toggle_event = AlarmToggleEvent(
+            alarm=alarm, timestamp=datetime.now(), toggled_to=alarm.is_active
+        )
         alarm_toggle_event.save()
         print(f"Alarm toggle event saved: {alarm_toggle_event}")
+        print("Waiting 10 seconds before next read")
+        sleep(10)
