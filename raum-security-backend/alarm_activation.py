@@ -34,6 +34,7 @@ class AlarmToggleEvent(Model):
 
     class Meta:
         database = db
+        table_name = "alarm_toggle_event"
 
 
 r = SimpleMFRC522()
