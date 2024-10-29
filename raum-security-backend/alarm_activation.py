@@ -12,7 +12,7 @@ db = MySQLDatabase(
     os.getenv("MYSQL_DATABASE"),
     user=os.getenv("MYSQL_USER"),
     password=os.getenv("MYSQL_PASSWORD"),
-    host="db",
+    host="127.0.0.1:3306",
 )
 
 
