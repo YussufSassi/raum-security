@@ -62,12 +62,14 @@ if __name__ == "__main__":
             alarm = Alarm.get(admin_id=card_id)
         except Alarm.DoesNotExist:
             print(f"Alarm with admin ID {card_id} not found")
+            send_notification(f"Unauthorized access attempt with admin ID {card_id}")
             sleep(10)
             continue
         alarm.is_active = not alarm.is_active
         alarm.save()
+        print(f"{alarm.name} is now {'active' if alarm.is_active else 'inactive'}")
         send_notification(
-            f"Alarm {alarm.name} is now {'active' if alarm.is_active else 'inactive'}"
+            f"{alarm.name} is now {'active' if alarm.is_active else 'inactive'}"
         )
         if alarm.is_active:
             toggle_light("green")
