@@ -59,6 +59,7 @@ if __name__ == "__main__":
             alarm = Alarm.get(admin_id=card_id)
         except Alarm.DoesNotExist:
             print(f"Alarm with admin ID {card_id} not found")
+            sleep(10)
             continue
         alarm.is_active = not alarm.is_active
         alarm.save()
