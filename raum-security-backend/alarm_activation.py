@@ -6,6 +6,8 @@ from peewee import *
 from dotenv import load_dotenv
 import os
 import RPi.GPIO as GPIO
+from light_controller import toggle_light
+from notification_controller import send_notification
 
 GPIO.setwarnings(False)
 load_dotenv()
@@ -53,6 +55,7 @@ def read_card(reader: SimpleMFRC522):
 
 if __name__ == "__main__":
     while True:
+        toggle_light("red")
         card_id = read_card(r)
 
         try:
@@ -63,9 +66,13 @@ if __name__ == "__main__":
             continue
         alarm.is_active = not alarm.is_active
         alarm.save()
-        print(
+        send_notification(
             f"Alarm {alarm.name} is now {'active' if alarm.is_active else 'inactive'}"
         )
+        if alarm.is_active:
+            toggle_light("green")
+        else:
+            toggle_light("red")
         alarm_toggle_event = AlarmToggleEvent(
             alarm=alarm, timestamp=datetime.now(), toggled_to=alarm.is_active
         )
