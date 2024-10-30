@@ -5,7 +5,9 @@ from mfrc522 import SimpleMFRC522
 from peewee import *
 from dotenv import load_dotenv
 import os
+import RPi.GPIO as GPIO
 
+GPIO.setwarnings(False)
 load_dotenv()
 
 db = MySQLDatabase(
@@ -52,8 +54,10 @@ def read_card(reader: SimpleMFRC522):
 if __name__ == "__main__":
     while True:
         card_id = read_card(r)
-        alarm = Alarm.get(admin_id=card_id)
-        if not alarm:
+
+        try:
+            alarm = Alarm.get(admin_id=card_id)
+        except Alarm.DoesNotExist:
             print(f"Alarm with admin ID {card_id} not found")
             continue
         alarm.is_active = not alarm.is_active
