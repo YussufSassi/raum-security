@@ -1,62 +1,42 @@
 from datetime import datetime
 from time import sleep
-import sys
-from mfrc522 import SimpleMFRC522
-from peewee import *
-from dotenv import load_dotenv
-import os
-import RPi.GPIO as GPIO
+from constants import PRESENTATION_MODE
 from light_controller import toggle_light
 from notification_controller import send_notification
+from models import Alarm, AlarmToggleEvent, db
+from rpi_emulator import rpi_emulator
 
-GPIO.setwarnings(False)
-load_dotenv()
+if PRESENTATION_MODE:
+    from rpi_emulator import rpi_emulator
 
-db = MySQLDatabase(
-    os.getenv("MYSQL_DATABASE"),
-    user=os.getenv("MYSQL_USER"),
-    password=os.getenv("MYSQL_PASSWORD"),
-    host="127.0.0.1",
-    port=3306,
-)
+    def read_card():
+        sleep(10)
+        return rpi_emulator.read_card(True)
 
+else:
+    import RPi.GPIO as GPIO
+    from mfrc522 import SimpleMFRC522
 
-class Alarm(Model):
-    id = IntegerField(primary_key=True)
-    name = CharField(max_length=255)
-    is_active = BooleanField(default=False)
-    admin_id = CharField(max_length=255)
+    r = SimpleMFRC522()
 
-    class Meta:
-        database = db
-        table_name = "alarm"
+    GPIO.setwarnings(False)
 
+    def read_card(reader: SimpleMFRC522):
+        id, _ = reader.read()
+        return str(id)
 
-class AlarmToggleEvent(Model):
-    id = IntegerField(primary_key=True)
-    alarm = ForeignKeyField(Alarm, backref="toggle_events")
-    timestamp = DateTimeField()
-    toggled_to = BooleanField()
-
-    class Meta:
-        database = db
-        table_name = "alarm_toggle_event"
-
-
-r = SimpleMFRC522()
 
 db.connect()
-
-
-def read_card(reader: SimpleMFRC522):
-    id, _ = reader.read()
-    return str(id)
 
 
 if __name__ == "__main__":
     while True:
         toggle_light("red")
-        card_id = read_card(r)
+
+        if PRESENTATION_MODE:
+            card_id = read_card()
+        else:
+            card_id = read_card(r)
 
         try:
             alarm = Alarm.get(admin_id=card_id)

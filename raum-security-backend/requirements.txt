@@ -3,3 +3,5 @@ mfrc522==0.0.7
 peewee==3.17.7
 python-dotenv==1.0.1
 requests==2.31.0
+uvicorn==0.34.0
+RPi.GPIO==0.7.1

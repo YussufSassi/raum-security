@@ -11,14 +11,14 @@ services:
     volumes:
       - mariadb_data:/var/lib/mysql
     ports:
-      - "3306:3306"
+      - "33063:3306"
 
   backend:
     build:
       context: ./raum-security-backend
       dockerfile: Dockerfile
     ports:
-      - "8000:8000"
+      - "8555:8000"
     depends_on:
       - db
     environment:
