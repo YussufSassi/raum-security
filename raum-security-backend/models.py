@@ -30,3 +30,24 @@ class AlarmToggleEvent(Model):
     class Meta:
         database = db
         table_name = "alarm_toggle_event"
+
+
+class IntruderDetectionEvent(Model):
+    id = IntegerField(primary_key=True)
+    timestamp = DateTimeField()
+    alarm = ForeignKeyField(Alarm, backref="intruder_detection_events")
+
+    class Meta:
+        database = db
+        table_name = "intruder_detection_event"
+
+
+class ScheduleAlarmToggle(Model):
+    id = IntegerField(primary_key=True)
+    toggle_alarm_at = IntegerField()
+    toggle_alarm_to = BooleanField()
+    alarm = ForeignKeyField(Alarm, backref="schedule_alarm_toggles")
+
+    class Meta:
+        database = db
+        table_name = "schedule_alarm_toggle"

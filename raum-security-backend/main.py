@@ -1,6 +1,6 @@
 from typing import Union
 from fastapi import FastAPI
-from models import Alarm, AlarmToggleEvent
+from models import Alarm, AlarmToggleEvent, IntruderDetectionEvent
 import json
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
@@ -31,7 +31,12 @@ def read_events(alarm_id: int):
     events = (
         AlarmToggleEvent.select().where(AlarmToggleEvent.alarm_id == alarm_id).dicts()
     )
-    return list(events)
+    intruder_detection_events = (
+        IntruderDetectionEvent.select()
+        .where(IntruderDetectionEvent.alarm_id == alarm_id)
+        .dicts()
+    )
+    return list(events) + list(intruder_detection_events)
 
 
 @app.delete("/alarms/{alarm_id}")
