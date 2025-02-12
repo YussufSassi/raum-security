@@ -46,7 +46,8 @@ Das System besteht aus mehreren Komponenten:
 
 ### **Datenbankmodell**
 Einfaches ER-Diagramm für die Speicherung der Alarmereignisse:
-# hier einfügen
+# ![RaumSecurity ERD - Hakan, Yussuf](https://github.com/user-attachments/assets/766909ad-0862-48f2-b48c-8fd42e43e85e)
+
 
 
 
