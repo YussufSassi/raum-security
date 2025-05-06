@@ -5,3 +5,4 @@ python-dotenv==1.0.1
 requests==2.31.0
 uvicorn==0.34.0
 RPi.GPIO==0.7.1
+picamera==1.13

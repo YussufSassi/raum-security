@@ -51,3 +51,13 @@ class ScheduleAlarmToggle(Model):
     class Meta:
         database = db
         table_name = "schedule_alarm_toggle"
+
+
+class Image(Model):
+    id = IntegerField(primary_key=True)
+    path = CharField(max_length=255)
+    timestamp = TimestampField(default=False)
+
+    class Meta:
+        database = db
+        table_name = "image"

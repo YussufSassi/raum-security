@@ -1,6 +1,6 @@
 from typing import Union
 from fastapi import FastAPI
-from models import Alarm, AlarmToggleEvent, IntruderDetectionEvent
+from models import Alarm, AlarmToggleEvent, IntruderDetectionEvent, Image
 import json
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
@@ -60,3 +60,20 @@ def create_alarm(alarm: AlarmDto):
         "admin_id": db_alarm.admin_id,
         "success": True,
     }
+
+
+@app.get("/images")
+def index():
+    return list(Image.select().dicts())
+
+
+@app.get("/image/raw/{id}")
+def image(id):
+    image = Image.select(Image.id == id)
+
+    if not image:
+        return {"error": "image not found!"}
+
+    image_data = open(image.path).read()
+
+    return image_data

@@ -31,6 +31,13 @@ CREATE TABLE schedule_alarm_toggle (
     FOREIGN KEY (alarm_id) REFERENCES alarm(id)
 );
 
+CREATE TABLE `image` (
+    `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    `path` VARCHAR(255) NOT NULL,
+    `timestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY `id` (`id`)
+);
+
 
 CREATE INDEX idx_alarm_toggle_event_alarm_id ON alarm_toggle_event(alarm_id);
 CREATE INDEX idx_intruder_detection_event_alarm_id ON intruder_detection_event(alarm_id);
