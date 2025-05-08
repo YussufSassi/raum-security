@@ -35,7 +35,7 @@ CREATE TABLE `image` (
     `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `path` VARCHAR(255) NOT NULL,
     `timestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE KEY `id` (`id`)
+    FOREIGN KEY (alarm_id) REFERENCES alarm(id)
 );
 
 
